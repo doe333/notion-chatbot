@@ -112,26 +112,27 @@
 
       input.value = '';
 
-fetch("https://hook.us2.make.com/d9kv2n2a5qs613w9gip4j1f3toniceht", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ message: text })
-})
-.then(response => response.json())
-.then(data => {
-  const botMsg = document.createElement('div');
-  botMsg.className = 'message bot';
-  botMsg.textContent = data.reply || "✅ Automation triggered!";
-  chat.appendChild(botMsg);
-  chat.scrollTop = chat.scrollHeight;
-})
-.catch(error => {
-  const botMsg = document.createElement('div');
-  botMsg.className = 'message bot';
-  botMsg.textContent = "⚠️ Error triggering automation.";
-  chat.appendChild(botMsg);
-  console.error(error);
-});
+      // ✅ Updated webhook call using .text() instead of .json()
+      fetch("https://hook.us2.make.com/d9kv2n2a5qs613w9gip4j1f3toniceht", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text })
+      })
+      .then(response => response.text())
+      .then(reply => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        botMsg.textContent = reply || "✅ Automation triggered!";
+        chat.appendChild(botMsg);
+        chat.scrollTop = chat.scrollHeight;
+      })
+      .catch(error => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        botMsg.textContent = "⚠️ Error triggering automation.";
+        chat.appendChild(botMsg);
+        console.error(error);
+      });
 
       chat.scrollTop = chat.scrollHeight;
     }
