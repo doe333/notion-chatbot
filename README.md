@@ -4,90 +4,127 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Notion Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notion Chatbot</title>
   <style>
+    :root {
+      --bg: #f7f6f3;
+      --text: #37352f;
+      --bubble-user: #e9e7e3;
+      --bubble-bot: white;
+      --border: rgba(55, 53, 47, 0.16);
+      --radius: 8px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
     body {
-      font-family: "Inter", sans-serif;
       margin: 0;
-      padding: 0;
-      background: #ffffff;
+      font-family: 'Segoe UI', 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
     }
 
-    .chat-modal {
-      width: 360px;
-      max-width: 100%;
-      margin: 40px auto;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      background: #f8f8f8;
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      overflow-y: auto;
     }
 
-    .chat-header {
-      font-size: 18px;
-      font-weight: 600;
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
       margin-bottom: 12px;
-      color: #333;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      line-height: 1.5;
+      white-space: pre-wrap;
     }
 
-    .chat-input {
-      width: 100%;
-      padding: 12px;
-      font-size: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      box-sizing: border-box;
+    .user {
+      align-self: flex-end;
+      background: var(--bubble-user);
     }
 
-    .chat-button {
-      width: 100%;
-      padding: 10px;
-      font-size: 15px;
-      background-color: #2f80ed;
+    .bot {
+      align-self: flex-start;
+      background: var(--bubble-bot);
+    }
+
+    .input-container {
+      display: flex;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      background: white;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px 14px;
+      font-size: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      outline: none;
+    }
+
+    button {
+      margin-left: 8px;
+      padding: 10px 16px;
+      font-size: 16px;
+      background: #2f80ed;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius);
       cursor: pointer;
+      transition: background 0.2s ease;
     }
 
-    .chat-button:hover {
-      background-color: #1c6cd9;
-    }
-
-    .chat-footer {
-      font-size: 12px;
-      color: #888;
-      margin-top: 10px;
-      text-align: center;
+    button:hover {
+      background: #1c6cd9;
     }
   </style>
 </head>
 <body>
-  <div class="chat-modal">
-    <div class="chat-header">💬 Notion Assistant</div>
-    <input
-      type="text"
-      id="chatbox"
-      class="chat-input"
-      placeholder="e.g. remind me to finish chem lab"
-    />
-    <button id="sendBtn" class="chat-button">Send</button>
-    <div class="chat-footer">Powered by Make + Gemini</div>
+  <div class="chat-container" id="chat">
+    <div class="message bot">Hi there! How can I help you today?</div>
+  </div>
+
+  <div class="input-container">
+    <input type="text" id="userInput" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
   </div>
 
   <script>
-    document.getElementById("sendBtn").onclick = function () {
-      const message = document.getElementById("chatbox").value;
-      fetch("[https://hook.make.com/your-webhook-url](https://hook.us2.make.com/d9kv2n2a5qs613w9gip4j1f3toniceht)", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      }).then(() => {
-        alert("Message sent!");
-        document.getElementById("chatbox").value = "";
-      });
-    };
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chat = document.getElementById('chat');
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user';
+      userMsg.textContent = text;
+      chat.appendChild(userMsg);
+
+      input.value = '';
+
+      // Simulate bot response
+      setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        botMsg.textContent = "🤖 I'm still learning — but I heard you say: " + text;
+        chat.appendChild(botMsg);
+        chat.scrollTop = chat.scrollHeight;
+      }, 600);
+
+      chat.scrollTop = chat.scrollHeight;
+    }
   </script>
 </body>
 </html>
