@@ -79,7 +79,7 @@
   <script>
     document.getElementById("sendBtn").onclick = function () {
       const message = document.getElementById("chatbox").value;
-      fetch("https://hook.make.com/your-webhook-url", {
+      fetch("[https://hook.make.com/your-webhook-url](https://hook.us2.make.com/d9kv2n2a5qs613w9gip4j1f3toniceht)", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
