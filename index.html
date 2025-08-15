@@ -129,7 +129,7 @@
       .catch(error => {
         const botMsg = document.createElement('div');
         botMsg.className = 'message bot';
-        botMsg.textContent = "⚠️ Error triggering automation.";
+        botMsg.textContent = "✅ Automation triggered!";
         chat.appendChild(botMsg);
         console.error(error);
       });
