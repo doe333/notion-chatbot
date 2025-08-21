@@ -5,21 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notion Chatbot</title>
 
-  <!-- Favicons: SVG + PNG fallbacks (with cache-busters) -->
+  <!-- Favicons -->
   <link rel="icon" href="https://cdn.worldvectorlogo.com/logos/notion-2.svg?v=2" type="image/svg+xml" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/32px-Notion-logo.svg.png?v=2">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/16px-Notion-logo.svg.png?v=2">
-  <link rel="shortcut icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/32px-Notion-logo.svg.png?v=2">
 
   <style>
     :root {
-      --bg: #f7f6f3;
-      --text: #37352f;
-      --bubble-user: #e9e7e3;
-      --bubble-bot: white;
-      --border: rgba(55, 53, 47, 0.16);
-      --radius: 8px;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --bg: #1e1e1e;
+      --text: #ffffff;
+      --bubble-user: #2f80ed;
+      --bubble-bot: #333333;
+      --border: rgba(255, 255, 255, 0.1);
+      --radius: 18px;
     }
 
     body {
@@ -32,6 +28,21 @@
       height: 100vh;
     }
 
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      background: #121212;
+    }
+
+    .header img {
+      height: 32px;
+    }
+
+    /* Chat area */
     .chat-container {
       flex: 1;
       display: flex;
@@ -41,67 +52,79 @@
     }
 
     .message {
-      max-width: 80%;
+      max-width: 75%;
       padding: 12px 16px;
       margin-bottom: 12px;
-      border: 1px solid var(--border);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
       line-height: 1.5;
-      white-space: pre-wrap;
+      word-wrap: break-word;
     }
 
     .user {
       align-self: flex-end;
       background: var(--bubble-user);
+      color: white;
+      border-bottom-right-radius: 4px;
     }
 
     .bot {
       align-self: flex-start;
       background: var(--bubble-bot);
+      color: white;
+      border-bottom-left-radius: 4px;
     }
 
+    /* Input */
     .input-container {
       display: flex;
+      align-items: center;
       padding: 12px 16px;
       border-top: 1px solid var(--border);
-      background: white;
+      background: #121212;
     }
 
     input {
       flex: 1;
-      padding: 10px 14px;
+      padding: 12px;
       font-size: 16px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      outline: none;
-    }
-
-    button {
-      margin-left: 8px;
-      padding: 10px 16px;
-      font-size: 16px;
-      background: #2f80ed;
-      color: white;
       border: none;
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: background 0.2s ease;
+      border-radius: 20px;
+      outline: none;
+      background: #2a2a2a;
+      color: white;
     }
 
-    button:hover {
-      background: #1c6cd9;
+    .icons {
+      display: flex;
+      margin-left: 8px;
+      gap: 10px;
+    }
+
+    .icons span {
+      font-size: 20px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="chat-container" id="chat">
-    <div class="message bot">Hi there! How can I help you today?</div>
+  <!-- Header -->
+  <div class="header">
+    <img src="https://designcompass.org/wp-content/uploads/2024/09/Notion-ai-01-1536x1152.png" alt="Notion AI" />
   </div>
 
+  <!-- Chat -->
+  <div class="chat-container" id="chat">
+    <div class="message bot">Hi! I’m Notion AI. How can I help you today?</div>
+  </div>
+
+  <!-- Input -->
   <div class="input-container">
     <input type="text" id="userInput" placeholder="Type a message..." />
-    <button onclick="sendMessage()">Send</button>
+    <div class="icons">
+      <span>😊</span>
+      <span>🎤</span>
+      <span onclick="sendMessage()">📤</span>
+    </div>
   </div>
 
   <script>
@@ -119,7 +142,7 @@
 
       input.value = '';
 
-      // ✅ Updated webhook call using .text() instead of .json()
+      // Call webhook
       fetch("https://hook.us2.make.com/d9kv2n2a5qs613w9gip4j1f3toniceht", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -136,7 +159,7 @@
       .catch(error => {
         const botMsg = document.createElement('div');
         botMsg.className = 'message bot';
-        botMsg.textContent = "✅ Automation triggered!";
+        botMsg.textContent = "⚠️ Error connecting to automation";
         chat.appendChild(botMsg);
         console.error(error);
       });
